@@ -26,9 +26,9 @@ public class ReporteService {
     }
 
     @Transactional
-    public ReporteResponse crear(ReporteRequest req) {
-        User usuario = userRepository.findById(req.usuarioId())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + req.usuarioId()));
+    public ReporteResponse crear(ReporteRequest req, Long usuarioId) {
+        User usuario = userRepository.findById(usuarioId)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + usuarioId));
 
         Reporte reporte = Reporte.builder()
                 .descripcion(req.descripcion())

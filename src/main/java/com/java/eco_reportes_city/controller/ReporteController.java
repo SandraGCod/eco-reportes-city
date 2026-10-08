@@ -4,11 +4,14 @@ import com.java.eco_reportes_city.dto.CambioEstadoRequest;
 import com.java.eco_reportes_city.dto.ReporteRequest;
 import com.java.eco_reportes_city.dto.ReporteResponse;
 import com.java.eco_reportes_city.entity.EstadoReporte;
+import com.java.eco_reportes_city.security.UsuarioAutenticado;
 import com.java.eco_reportes_city.service.ReporteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.java.eco_reportes_city.security.UsuarioAutenticado;
 
 import java.util.List;
 
@@ -23,8 +26,9 @@ public class ReporteController {
     }
 
     @PostMapping
-    public ResponseEntity<ReporteResponse> crear(@Valid @RequestBody ReporteRequest req) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(reporteService.crear(req));
+    public ResponseEntity<ReporteResponse> crear(@Valid @RequestBody ReporteRequest req,
+                                               @AuthenticationPrincipal UsuarioAutenticado usuario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(reporteService.crear(req, usuario.id()));
     }
 
     @GetMapping
