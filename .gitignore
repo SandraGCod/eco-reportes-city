@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### MYSQL ###
-application-local.properties
+application-local.propertiesapplication-local.properties
