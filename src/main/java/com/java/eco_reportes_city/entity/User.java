@@ -8,28 +8,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
+import lombok.*;
 
 @Entity
-@Table(name = "users")
-@Data
+@Table(name = "usuarios")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(nullable = false, length = 100)
+    private String nombre;
 
-    @Column(unique = true)
-    private String email;
+    @Column(nullable = false, unique = true)
+    private String correo;
 
+    @Column(nullable = false)
     private String password;
-    private LocalDateTime dateRegistration;
+
+    @Column(nullable = false, length = 20)
+    private String rol; // CIUDADANO o ADMIN
 }
