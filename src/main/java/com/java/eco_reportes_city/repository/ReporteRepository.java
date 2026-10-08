@@ -11,4 +11,6 @@ public interface ReporteRepository extends JpaRepository<Reporte, Long> {
     List<Reporte> findByEstado(EstadoReporte estado);
 
     List<Reporte> findByUsuarioId(Long usuarioId);
+
+    List<Reporte> findByEstadoOrderByFechaCreacionDesc(EstadoReporte estado);
 }
