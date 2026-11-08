@@ -21,6 +21,8 @@ public class Reporte {
     @Column(nullable = false, length = 500)
     private String descripcion;
 
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String fotoUrl;
 
     @Column(nullable = false)

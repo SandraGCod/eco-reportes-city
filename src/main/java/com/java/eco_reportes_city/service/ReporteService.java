@@ -39,7 +39,7 @@ public class ReporteService {
                 .usuario(usuario)
                 .build();
 
-        return aRespuesta(reporteRepository.save(reporte));
+        return aRespuesta(reporteRepository.save(reporte), true);
     }
 
     @Transactional(readOnly = true)
@@ -47,19 +47,19 @@ public class ReporteService {
         List<Reporte> reportes = (estado == null)
                 ? reporteRepository.findAll(Sort.by(Sort.Direction.DESC, "fechaCreacion"))
                 : reporteRepository.findByEstadoOrderByFechaCreacionDesc(estado);
-        return reportes.stream().map(this::aRespuesta).toList();
+        return reportes.stream().map(r -> aRespuesta(r, false)).toList();
     }
 
     @Transactional(readOnly = true)
     public ReporteResponse obtener(Long id) {
-        return aRespuesta(buscar(id));
+        return aRespuesta(buscar(id), true);
     }
 
     @Transactional
     public ReporteResponse cambiarEstado(Long id, EstadoReporte nuevoEstado) {
         Reporte reporte = buscar(id);
         reporte.setEstado(nuevoEstado);
-        return aRespuesta(reporteRepository.save(reporte));
+        return aRespuesta(reporteRepository.save(reporte),true);
     }
 
     private Reporte buscar(Long id) {
@@ -67,9 +67,10 @@ public class ReporteService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Reporte no encontrado: " + id));
     }
 
-    private ReporteResponse aRespuesta(Reporte r) {
+    private ReporteResponse aRespuesta(Reporte r, boolean incluirFoto) {
         return new ReporteResponse(
-                r.getId(), r.getDescripcion(), r.getFotoUrl(), r.getLatitud(), r.getLongitud(),
+                r.getId(), r.getDescripcion(), incluirFoto ? r.getFotoUrl() : null,
+                r.getLatitud(), r.getLongitud(),
                 r.getDireccion(), r.getEstado(), r.getFechaCreacion(),
                 r.getUsuario().getId(), r.getUsuario().getNombre());
     }
